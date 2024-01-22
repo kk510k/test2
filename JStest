@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>アカウント登録</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+          .base {
+            margin: 2% 7% 0;
+            height: 500px;
+            background: blue;
+            padding: 5% 10%;
+            box-shadow: 5px 9px 8px 5px rgba(0, 0, 0, 0.5);
+          }
+          input {
+            width: 300px;
+            height: 40px;
+            font-size: large;
+          }
+          #tuikaBtn {
+            background: green;
+          }
+          h1 {
+            font-family: serif;
+          }
+          .form-control::placeholder {
+              color: #cacaca;
+              opacity: 1;
+          }
+          table {
+            border-collapse: collapse; 
+          }
+
+          th,td {
+            border: 1px solid #312929;
+            padding: 5px 10px;
+          }
+          .card {
+            width: 100%;
+            height: 350px;
+          }
+          .back{
+            padding: 30px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+          }
+          .form-group{
+            margin: 10px 0 15px 0px;
+          }
+          #result {
+            font-size: 120%;
+            margin: 10;
+            margin: 10px 20px;
+            padding: 10px 5px 20px;
+            margin: 10px 5px 10px 5px;
+          }
+
+          .row .card{
+            color: red;
+          }
+
+          .card{
+            color: blue;
+            display: block;
+            position: relative;
+          }
+
+          #modal{
+            display: none;
+            margin:1.5em auto 0;
+            background-color: white;
+            border: 1px solid black;
+            width: 50%;
+            padding: 10px 20px;
+            position: fixed;
+            border-radius: 5px;
+          }
+
+          #overLay{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background-color: rgba(0,0,0,0.75);
+          }
+
+        </style>
+    </head>
+    <body>
+        <div class="base container">
+          <div class="row">
+            <h1>アカウント登録</h1>
+          </div>
+          <div class="row">
+            <div class="card" id="card">
+              <div class="card-block">
+                <form id="form-area" class="form-inline" method="post">
+                    <div class="form-group">
+                        <div class="input-group">
+                          <input id="namae" name="namae" type="text" class="form-control" placeholder="名前">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input id="nickname" name="nickname" type="text" class="form-control" placeholder="ニックネーム">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                      <input id="tuikaBtn" type="button" name="touroku" value="追加">
+                    </div>
+
+                </form>
+                <div id="tuikaMoto">
+
+                </div>
+                <div id="result"></div>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+      <div id="overLay">
+      </div>
+        <script>
+          // ここに設問のコードを追加してください。
+          let count = 0;
+
+document.getElementById('tuikaBtn').addEventListener('click', function() {
+    if (count < 3) {
+        let namaeValue = document.getElementById('namae').value;
+        let nicknameValue = document.getElementById('nickname').value;
+
+        if (namaeValue !== '' && nicknameValue !== '') {
+            let confirmation = confirm(`${namaeValue} さん ${nicknameValue} を登録します。よろしいですか？`);
+
+            if (confirmation) {
+                let resultDiv = document.getElementById('result');
+                resultDiv.innerHTML += `<p>${namaeValue} さん ${nicknameValue} にて登録しました。</p>`;
+                alert(`${namaeValue} さん ${nicknameValue} にて登録しました。`);
+                count++;
+
+                if (count === 3) {
+                    document.getElementById('tuikaBtn').style.display = 'none';
+                }
+
+                // テーブルに追加
+                let table = document.getElementById('tuikaMoto');
+                let row = table.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+                cell1.innerHTML = namaeValue;
+                cell2.innerHTML = nicknameValue;
+
+                // 削除ボタンを追加
+                let deleteButton = document.createElement('button');
+                deleteButton.textContent = '削除';
+                deleteButton.onclick = function() {
+                    deleteRow(this);
+                };
+                cell3.appendChild(deleteButton);
+            }
+        } else {
+            alert('名前とニックネームを入力してください。');
+        }
+    } else {
+        alert('3回登録済みです。');
+    }
+});
+
+function deleteRow(btn) {
+    let row = btn.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+    count--;
+
+    if (count < 3) {
+        document.getElementById('tuikaBtn').style.display = 'block';
+    }
+}
+
+
+
+
+        </script>
+    </body>
+</html>
